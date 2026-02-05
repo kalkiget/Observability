@@ -1,0 +1,40 @@
+replicas: 1
+
+service:
+  type: ClusterIP
+  port: 80
+
+adminUser: admin
+adminPassword: "StrongP@ssword7480"   # for demo only use secrets in real use
+
+persistence:
+  enabled: true
+  size: 5Gi
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Loki
+        type: loki
+        url: http://loki:3100
+        access: proxy
+        isDefault: true
+
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+      - name: "default"
+        orgId: 1
+        folder: ""
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/default
+
+dashboards:
+  default:
+    demo-dashboard:
+      file: /var/lib/grafana/dashboards/default/demo-dashboard.json
